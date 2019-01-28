@@ -1,0 +1,66 @@
+/*
+ * RegistreBorne.cpp
+ *
+ *  Created on: 2018-11-09
+ *      Author: etudiant
+ */
+
+#include "RegistreBorne.h"
+#include "Borne.h"
+#include <sstream>
+
+namespace bornesQuebec {
+
+RegistreBorne::RegistreBorne(const std::string& p_nomRegistre):m_nomRegistreBorne(p_nomRegistre)
+{
+	PRECONDITION(!p_nomRegistre.empty());
+
+	POSTCONDITION(m_nomRegistreBorne == p_nomRegistre);
+
+	INVARIANTS();
+}
+
+const std::string& RegistreBorne::reqNomRegistreBorne() const {
+	return m_nomRegistreBorne;
+}
+
+std::string RegistreBorne::reqRegistreBorneFormate() const{
+	std::ostringstream affiche;
+
+	affiche << "Registre : " << m_nomRegistreBorne << std::endl;
+
+	for(unsigned int i = 0; i < m_vBornes.size(); i++){
+		affiche << m_vBornes[i]->reqBorneFormate();
+	}
+
+	return affiche.str();
+}
+
+//a faire
+bool RegistreBorne::BorneEstDejaPresente(const Borne& p_borne) const{
+
+	bool present { false };
+	for(unsigned int i = 0; i < m_vBornes.size(); i++){
+		if(m_vBornes[i] == p_borne) //! je compare les elts grace à l'opérateur== ds Borne
+			present = true;
+	}
+
+	return present;
+
+}
+void RegistreBorne::ajouteBorne(const Borne& p_borne){
+	m_vBornes.push_back(p_borne.clone());
+}
+void RegistreBorne::verifieInvariant() const{
+	INVARIANT(!m_nomRegistreBorne.empty());
+}
+
+RegistreBorne::~RegistreBorne() {
+	while(!m_vBornes.empty())
+	{
+	   delete m_vBornes.back();
+	   m_vBornes.pop_back();
+	}
+}
+
+} /* namespace bornesQuebec */

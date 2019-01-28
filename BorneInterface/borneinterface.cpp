@@ -1,0 +1,116 @@
+#include "borneinterface.h"
+#include "interfacebornefontaine.h"
+#include "interfacebornestationnement.h"
+#include "interfacesupprimer.h"
+#include "BorneStationnement.h"
+#include "BorneFontaine.h"
+#include "BorneException.h"
+#include "Borne.h"
+#include <QMessageBox>
+
+using namespace bornesQuebec;
+
+BorneInterface::BorneInterface(QWidget *parent)
+    : QMainWindow(parent),registre(RegistreBorne("Ville de Quebec"))
+{
+
+	ui.setupUi(this);
+	QObject::connect(ui.actionBorne_station, SIGNAL(triggered()), this, SLOT(slotLanceDialogueStationnement()));
+	QObject::connect(ui.actionBorne_fontaine, SIGNAL(triggered()), this, SLOT(slotLanceDialogueFontaine()));
+	QObject::connect(ui.actionSupprimer, SIGNAL(triggered()), this, SLOT(slotLanceDialogueSupprimer()));
+	QObject::connect(ui.actionQuitter, SIGNAL(triggered()), this, SLOT(close()));
+	//ui.tableWidget->
+}
+
+/**
+ * @fn slotLanceDialogueStationnement
+ * @brief slotLanceDialogueStationnement est déclancher lors du clic sur le boutton ajouter,
+ * 		 en conséquent c'est elle qui va exécuter la fonction ajoutBorne de la classe RegistreBorne.
+ * 		 1-> je verifie que les données entrées sont correcte
+ * 		 2-> je construit mon objet borneStationnement
+ * 		 3-> je l'ajoute ds le vecteur
+ * 		 4-> fermer la boite de dialogue
+ */
+void BorneInterface::slotLanceDialogueStationnement(){
+	interfaceBorneStationnement dialogueStation(this);
+	if(dialogueStation.exec()){
+		try{
+			//!création de ma borne stationnement
+			BorneStationnement borne_s( dialogueStation.reqIdentifie().toInt(),
+										dialogueStation.reqDirection().toStdString(),
+										dialogueStation.reqNomTopographique().toStdString(),
+										dialogueStation.reqLongitude().toDouble(),
+										dialogueStation.reqLatitude().toDouble(),
+										dialogueStation.reqType().toStdString(),
+										dialogueStation.reqLectureMetrique().toDouble(),
+										dialogueStation.reqSegmentRue().toInt(),
+										dialogueStation.reqNumBorne().toStdString(),
+										dialogueStation.reqCoteRue().toStdString() );
+			registre.ajouteBorne(borne_s);
+			affiche();
+		}catch(BorneDejaPresenteException& e){
+			QString message = (e.what());
+			QMessageBox::information(this, "ERREUR", message);
+		}catch(PreconditionException& e){
+			QString message = (e.what());
+			QMessageBox::information(this, "ERREUR", message);
+		}
+	}
+}
+
+void BorneInterface::slotLanceDialogueFontaine(){
+	interfaceBorneFontaine dialogueFontaine(this);
+	if(dialogueFontaine.exec()){
+		try{
+			//!création de ma borne fontaine
+			BorneFontaine borne_f(dialogueFontaine.reqIdentifie().toInt(),
+									dialogueFontaine.reqDirection().toStdString(),
+									dialogueFontaine.reqNomTopographique().toStdString(),
+									dialogueFontaine.reqLongitude().toDouble(),
+									dialogueFontaine.reqLatitude().toDouble(),
+									dialogueFontaine.reqVille().toStdString(),
+									dialogueFontaine.reqArrondissement().toStdString());
+			registre.ajouteBorne(borne_f);
+			affiche();
+		}catch(BorneDejaPresenteException& e){
+			QString message = (e.what());
+			QMessageBox::information(this, "ERREUR", message);
+		}catch(PreconditionException& p){
+			QString message = "format borne Fontaine invalide";
+			QMessageBox::information(this, "ERREUR", message);
+		}
+	}
+}
+
+void BorneInterface::slotLanceDialogueSupprimer(){
+	interfaceSupprimer dialogueSupprimer(this);
+	if(dialogueSupprimer.exec()){
+		try{
+			registre.supprimeBorne(dialogueSupprimer.ReqIdentifiant().toInt());
+			affiche();
+		}catch (BorneAbsenteException& e) {
+			affiche();
+			QString message = (e.what());
+			QMessageBox::information(this, "ERREUR", message);
+		}catch (PreconditionException& e) {
+			affiche();
+			QString message = "Borne absente, veuillez entrer une autre borne";
+			QMessageBox::information(this, "ERREUR", message);
+		}
+	}
+}
+
+/**
+ * @brief affiche les valeurs de notre borne dans la fenêtre principale
+ */
+void BorneInterface::affiche() const{
+	std::string affiche = registre.reqRegistreBorneFormate();
+	if(affiche=="")
+		affiche = "le registre est vide";
+	QString qstr = QString::fromStdString(affiche);
+	ui.textBrowser->setText(qstr);
+}
+BorneInterface::~BorneInterface()
+{
+
+}

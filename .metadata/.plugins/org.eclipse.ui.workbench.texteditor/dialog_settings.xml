@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="Quebec" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="true" key="incremental"/>
+		<item value="false" key="wrap"/>
+		<item value="true" key="wholeword"/>
+		<list key="findhistory">
+			<item value="Québec"/>
+			<item value="suppr"/>
+			<item value="traitement2"/>
+			<item value="borneFontaine"/>
+			<item value="p2"/>
+			<item value="a"/>
+			<item value="ligne2"/>
+			<item value="ligne"/>
+		</list>
+		<list key="replacehistory">
+			<item value="Quebec"/>
+			<item value="flux2"/>
+			<item value="bf"/>
+			<item value="traitement2"/>
+			<item value="attribut"/>
+			<item value="valeurBrute"/>
+			<item value="ligneSeparerDe:"/>
+			<item value="f_borne"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="257" key="DIALOG_WIDTH"/>
+		<item value="1|Noto Sans|9.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+		<item value="409" key="DIALOG_HEIGHT"/>
+		<item value="952" key="DIALOG_X_ORIGIN"/>
+		<item value="0" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

@@ -1,0 +1,25 @@
+#ifndef BORNEINTERFACE_H
+#define BORNEINTERFACE_H
+
+#include <QtGui/QMainWindow>
+#include "ui_borneinterface.h"
+
+class BorneInterface : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    BorneInterface(QWidget *parent = 0);
+    ~BorneInterface();
+
+public slots:
+	void slotLanceDialogueStationnement();
+	void slotLanceDialogueFontaine();
+	void slotLanceDialogueSupprimer();
+	//void slotQuitter();
+
+private:
+    Ui::BorneInterfaceClass ui;
+};
+
+#endif // BORNEINTERFACE_H

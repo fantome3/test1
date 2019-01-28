@@ -1,0 +1,81 @@
+/**
+ * BorneFontaine.cpp
+ *  Created on: 2018-11-08
+ *      Author: etudiant
+ */
+
+#include "BorneFontaine.h"
+#include <sstream>
+
+namespace bornesQuebec{
+
+/**
+ *
+ * @param p_identifiant
+ * @param p_direction
+ * @param p_nomTopographique
+ * @param p_longitude
+ * @param p_latitude
+ * @param p_ville
+ * @param p_arrondissement
+ */
+BorneFontaine::BorneFontaine(int p_identifiant, const std::string& p_direction, const std::string& p_nomTopographique, double p_longitude,
+		double p_latitude, const std::string& p_ville, const std::string& p_arrondissement)
+:Borne(p_identifiant, p_direction, p_nomTopographique, p_longitude, p_latitude),
+ m_ville(p_ville), m_arrondissement(p_arrondissement)
+{
+	PRECONDITION(!p_ville.empty());
+	PRECONDITION(p_ville == "Quebec" && !p_arrondissement.empty());
+
+	POSTCONDITION(reqArrondissement() == m_arrondissement);
+	POSTCONDITION(reqVille() == m_ville);
+
+	INVARIANTS();
+
+}
+
+BorneFontaine::~BorneFontaine() {
+	// TODO Auto-generated destructor stub
+}
+
+const std::string& BorneFontaine::reqArrondissement() const {
+	return m_arrondissement;
+}
+
+const std::string& BorneFontaine::reqVille() const {
+	return m_ville;
+}
+
+std::string BorneFontaine::reqBorneFormate() const{
+	//! on instancie un objet std::ostringstream
+	std::ostringstream valeurs;
+	valeurs << "Borne-fontaine" << std::endl
+			<< "----------------------------------------------" << std::endl
+			<< reqBorneFormate()
+			/*<< "Identifiant de la borne : " << reqIdentifiant() << std::endl
+			<< "Direction          : " << reqDirection() << std::endl
+			<< "Nom topographique  : " << reqNomTopographique() << std::endl
+			<< "Longitude          : " << std::fixed << reqLongitude() << std::endl
+			<< "Latitude           : " << std::fixed << reqLatitude()<< std::endl*/
+			<<"Ville               : " << m_ville << std::endl
+			<< "Arrondissement     : " << m_arrondissement << std::endl;
+
+	return valeurs.str();
+}
+
+/**
+ * @brief faire une copie allouée sur le monceau de l'objet courant
+ * @return Copie du constructeur
+ */
+Borne* BorneFontaine::clone() const{
+
+	return new BorneFontaine(*this);
+
+}
+
+void BorneFontaine::verifieInvariant() const
+{
+	INVARIANT(!m_ville.empty());
+	INVARIANT(m_ville == "Quebec" && !m_arrondissement.empty());
+}
+}

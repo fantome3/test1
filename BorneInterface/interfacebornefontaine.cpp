@@ -1,0 +1,86 @@
+#include "interfacebornefontaine.h"
+#include "BorneException.h"
+#include "RegistreBorne.h"
+#include "BorneFontaine.h"
+#include <string>
+
+#include <QMessageBox>
+
+using namespace bornesQuebec;
+
+interfaceBorneFontaine::interfaceBorneFontaine(QWidget *parent)
+    : QDialog(parent)
+{
+	ui.setupUi(this);
+	QObject::connect(ui.ajouter, SIGNAL(clicked()), this, SLOT(enregistrementFontaine()));
+	QObject::connect(ui.annuler, SIGNAL(clicked()), this, SLOT(effacer()));
+}
+
+QString interfaceBorneFontaine::reqIdentifie() const {
+	return ui.identifiant->text();
+}
+
+QString interfaceBorneFontaine::reqDirection() const {
+	return ui.direction->text();
+}
+
+QString interfaceBorneFontaine::reqNomTopographique() const {
+	return ui.nomTopographique->text();
+}
+
+QString interfaceBorneFontaine::reqLongitude() const {
+	return ui.longitude->text();
+}
+
+QString interfaceBorneFontaine::reqLatitude() const {
+	return ui.latitude->text();
+}
+
+QString interfaceBorneFontaine::reqVille() const{
+	return ui.ville->text();
+}
+
+QString interfaceBorneFontaine::reqArrondissement() const{
+	return ui.arrondissement->text();
+}
+
+void interfaceBorneFontaine::enregistrementFontaine(){
+
+	std::string ville = ui.ville->text().toStdString();
+	if(ui.ville->text().isEmpty()){
+		QString message("La ville ne doit pas être vide");
+		QMessageBox::information(this, "ERREUR", message);
+		return;
+	}//(m_ville == "Quebec" && !m_arrondissement.empty()) || (m_ville != "Quebec" && m_arrondissement.empty())
+	if(ville == "Quebec" && ui.arrondissement->text().isEmpty()){
+		QString message("L'arrondissement ne doit pas être vide");
+		QMessageBox::information(this, "ERREUR", message);
+		return;
+	}if(ville != "Quebec" && !ui.arrondissement->text().isEmpty()){
+		QString message("L'arrondissement de cette ville doit être vide");
+		QMessageBox::information(this, "ERREUR", message);
+		return;
+	}else{
+		accept();
+	}
+}
+
+void interfaceBorneFontaine::effacer(){
+	ui.identifiant->setText("");
+
+	ui.direction->setText("");
+
+	ui.nomTopographique->setText("");
+
+	ui.longitude->setText("");
+
+	ui.latitude->setText("");
+
+	ui.ville->setText("");
+
+	ui.arrondissement->setText("");
+}
+interfaceBorneFontaine::~interfaceBorneFontaine()
+{
+
+}

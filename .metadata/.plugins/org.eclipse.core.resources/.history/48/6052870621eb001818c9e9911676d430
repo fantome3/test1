@@ -1,0 +1,63 @@
+/*
+ * RegistreBorne.cpp
+ *
+ *  Created on: 2018-11-09
+ *      Author: etudiant
+ */
+
+#include "RegistreBorne.h"
+#include <sstream>
+
+namespace bornesQuebec {
+
+RegistreBorne::RegistreBorne(const std::string& p_nomRegistre):m_nomRegistreBorne(p_nomRegistre)
+{
+	PRECONDITION(!p_nomRegistre.empty());
+
+	POSTCONDITION(m_nomRegistreBorne == p_nomRegistre);
+
+	INVARIANTS();
+}
+/**
+ *
+ *
+ * penser a regarder classe pile pour ecrire:
+ * 	tester si le vecteur est vide, plein, contient une borne identique
+ *
+ *
+ *
+ */
+const std::string& RegistreBorne::reqNomRegistreBorne() const {
+	return m_nomRegistreBorne;
+}
+
+std::string RegistreBorne::reqRegistreBorneFormate() const{
+	std::ostringstream affiche;
+	unsigned int dimension = m_vBornes.size();
+	affiche << "Registre : " << m_nomRegistreBorne << std::endl;
+
+	for(unsigned int i = 0; i < dimension; i++){
+		affiche << m_vBornes[i]->reqBorneFormate();
+	}
+
+	return affiche.str();
+}
+
+//a faire
+bool RegistreBorne::BorneEstDejaPresente(const Borne& p_borne) const{
+	bool present { false };
+
+	return present;
+}
+void RegistreBorne::ajouteBorne(const Borne& p_borne){
+	//m_vBornes.push_back(p_borne);
+}
+void RegistreBorne::verifieInvariant() const{
+	INVARIANT(!m_nomRegistreBorne.empty());
+}
+
+RegistreBorne::~RegistreBorne() {
+	// TODO Auto-generated destructor stub
+}
+
+} /* namespace bornesQuebec */

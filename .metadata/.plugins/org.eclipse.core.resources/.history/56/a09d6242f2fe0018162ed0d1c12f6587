@@ -1,0 +1,157 @@
+/*
+ * RegistreBorneTesteur.cpp
+ *
+ *  Created on: 2018-11-10
+ *      Author: etudiant
+ */
+
+#include <gtest/gtest.h>
+#include "RegistreBorne.h"
+#include "BorneStationnement.h"
+#include "BorneFontaine.h"
+#include <iomanip>
+
+using namespace bornesQuebec;
+
+/**
+ * @test Test du constructeur
+ *       cas valides: Creation d'un objet RegistreBorne et vérification de l'assignation de tous les attributs
+ *       cas invalide:
+ *       	nomRegistre est vide
+ */
+TEST(RegistreBorne, parametreValide){
+	bornesQuebec::RegistreBorne registre("bornes de la ville de Quebec 2018");
+	ASSERT_EQ("bornes de la ville de Quebec 2018", registre.reqNomRegistreBorne());
+}
+
+//! cas ou le paramètre est vide
+TEST(RegistreBorne, parametreInvalide){
+	ASSERT_THROW(new RegistreBorne(""), PreconditionException)
+			<<"le paramètre est vide\n";
+}
+
+/**
+ * @class MethodeRegistreBorne
+ * @brief creation d'un Fixture pour les tests sur RegistreBorne
+ */
+class MethodeRegistreBorne : public ::testing::Test{
+public:
+	MethodeRegistreBorne() :
+		f_borneRegistreTest("bornes de la ville de Quebec 2018")
+	{};
+	RegistreBorne f_borneRegistreTest;
+};
+
+/**
+ * @brief Test de la méthode reqCoteRue() const
+ * 		cas valide vérifier le retour du nom
+ */
+TEST_F(MethodeRegistreBorne, retourneNomRegistreBorne){
+	ASSERT_EQ("bornes de la ville de Quebec 2018", f_borneRegistreTest.reqNomRegistreBorne());
+}
+
+/**
+ * @brief Test de la methode ajouteBorne
+ * 		cas valide: la valeur ajouter dans le registre est identique à celle de départ
+ * 		cas invalide: la valeur ajouter existe
+ */
+TEST_F(MethodeRegistreBorne, ajouteValide){
+	BorneFontaine borne(103270, "Sud", "Boulevard de l'Ormière", -71.350887,
+			46.838146, "Quebec", "La Haute-Saint-Charles");
+
+	//! on ajoute borne le registre
+	f_borneRegistreTest.ajouteBorne(borne);
+
+	//! on recupère toute la sortie afficher dans le registre
+	std::string afficheInitiale = f_borneRegistreTest.reqRegistreBorneFormate();
+
+	std::ostringstream flux1,flux2;
+
+	//! on met les valeurs de notre de notre objet initiale dans un ostringstream
+	flux2 << borne.reqIdentifiant();
+	flux2 << ",";
+	flux2 << borne.reqDirection()+",";
+	flux2 << borne.reqNomTopographique()+",";
+	flux2 << std::fixed << borne.reqLongitude();
+	flux2 << ",";
+	flux2 << std::fixed << borne.reqLatitude();
+
+	//!on met la sortie du registre sous la forme: identifiant,direction,nomTopographique,longitude,latitude
+	std::string attributs = util::valideStationnement(afficheInitiale, flux1);
+
+	//! on compare les deux chaines de caractères
+	ASSERT_EQ(attributs, flux2.str());
+}
+
+TEST_F(MethodeRegistreBorne, ajouteNonValide){
+	BorneStationnement bf1(300070, "Nord", "Boulevard René-Levesque Est",
+			-71.226669, 46.814323, "stationnement", 23.7, 20, "2172", "Nord");
+	BorneStationnement bf2(300070, "Nord", "Boulevard René-Levesque Est",
+				-71.226669, 46.814323, "stationnement", 23.7, 20, "2172", "Nord");
+	f_borneRegistreTest.ajouteBorne(bf1);
+	ASSERT_THROW(f_borneRegistreTest.ajouteBorne(bf2), PreconditionException);
+}
+
+/**
+ * \brief  Test de la méthode std::string reqBorneFormatee()
+ *        cas valide reqBorneFormate: Borne connue dont on connaît le format.
+ *        cas invalide Aucun d'identifié
+ */
+TEST_F(MethodeRegistreBorne, AfficheToutesLesBorne){
+
+	BorneStationnement bf1(300070, "Nord", "Boulevard René-Levesque Est",
+			-71.226669, 46.814323, "stationnement", 23.7, 20, "2172", "Nord");
+	BorneFontaine bf2(103270, "", "Boulevard de l'Ormière", -71.358875,
+			46.838144, "Quebec", "La Haute-Saint-Charles");
+	f_borneRegistreTest.ajouteBorne(bf1);
+	f_borneRegistreTest.ajouteBorne(bf2);
+	std::ostringstream valeurs;
+	valeurs << "Registre : bornes de la ville de Quebec 2018" << std::endl
+			<<"Borne de stationnement"<< std::endl
+			<< "----------------------------------------------" << std::endl
+			<< "Identifiant de la borne : 300070" << std::endl
+			<< "Direction          : Nord" << std::endl
+			<< "Nom topographique  : Boulevard René-Levesque Est" << std::endl
+			<< "Longitude          : -71.226669" << std::endl
+			<< "Latitude           : 46.814323" << std::endl
+			<< "Distance mesurée    : 23.700000" << std::endl
+			<< "Segment de Rue     : 20" << std::endl
+			<< "Numero de la borne  : 2172" << std::endl
+			<< "Cote de la rue     : Nord" << std::endl
+			<< "----------------------------------------------" << std::endl
+			<< "Borne-fontaine" << std::endl
+			<< "----------------------------------------------" << std::endl
+		   	<< "Identifiant de la borne : 103270\nDirection          : \n"
+			<< "Nom topographique  : Boulevard de l'Ormière\nLongitude          : -71.358875\n"
+			<< "Latitude           : 46.838144\nVille               : Quebec\n"
+			<< "Arrondissement     : La Haute-Saint-Charles\n"
+			<< "----------------------------------------------" << std::endl;
+	ASSERT_EQ(valeurs.str(), f_borneRegistreTest.reqRegistreBorneFormate());
+}
+/**
+ * \brief  Test de la mÃ©thode supprimeBorne()
+ *        cas valide : Suppression d'une borne existante
+ *        cas invalide Suppression d'une borne absente (revoie CompteAbsentException)
+ */
+
+TEST_F(MethodeRegistreBorne, supprimeBorneExistante){
+	BorneFontaine bf1(103270, "", "Boulevard de l'Ormière", -71.358875,
+			46.838144, "Quebec", "La Haute-Saint-Charles");
+	BorneStationnement bs1(300070, "Nord", "Boulevard RenÃ©-Levesque Est",
+			-71.226669, 46.814323, "stationnement", 23.7, 20, "2172", "Nord");
+	f_borneRegistreTest.ajouteBorne(bf1);
+	f_borneRegistreTest.ajouteBorne(bs1);
+	f_borneRegistreTest.supprimeBorne(103270);
+	//ASSERT_EQ("103270" , bf1.reqIdentifiant());
+
+	}
+
+TEST_F(MethodeRegistreBorne, supprimeBorneAbsente){
+	BorneFontaine bf1(103270, "", "Boulevard de l'OrmiÃ¨re", -71.358875,
+				46.838144, "Quebec", "La Haute-Saint-Charles");
+	BorneStationnement bs1(300070, "Nord", "Boulevard René-Levesque Est",
+				-71.226669, 46.814323, "stationnement", 23.7, 20, "2172", "Nord");
+	f_borneRegistreTest.ajouteBorne(bf1);
+
+	ASSERT_THROW(f_borneRegistreTest.supprimeBorne(1032), PreconditionException);
+}

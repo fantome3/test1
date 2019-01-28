@@ -1,0 +1,49 @@
+/*
+ * BorneStationnement.h
+ *
+ *  Created on: 2018-11-09
+ *      Author: etudiant
+ */
+
+#ifndef BORNESTATIONNEMENT_H_
+#define BORNESTATIONNEMENT_H_
+
+#include "ContratException.h"
+#include "validationFormat.h"
+#include "Borne.h"
+#include <string>
+
+namespace bornesQuebec {
+
+class BorneStationnement : public Borne {
+public:
+	BorneStationnement(int , const std::string& , const std::string& , double , double ,const std::string& p_type,
+			double p_lectureMetrique, int p_segmentRue, const std::string& p_numBorne, const std::string& p_coteRue);
+
+	virtual std::string reqBorneFormate() const;
+	virtual ~BorneStationnement();
+
+	const std::string& reqCoteRue() const;
+	double reqLectureMetrique() const;
+	const std::string& reqNumBorne() const;
+	int reqSegmentRue() const;
+	const std::string& reqType() const;
+
+	static bool validerType(const std::string& );
+
+/**
+ * @brief déclaration des variables privées
+ */
+private:
+	std::string m_type;
+	double m_lectureMetrique;
+	int m_segmentRue;
+	std::string m_numBorne;
+	std::string m_coteRue;
+	void verifieInvariant() const;
+
+};
+
+} /* namespace bornesQuebec */
+
+#endif /* BORNESTATIONNEMENT_H_ */

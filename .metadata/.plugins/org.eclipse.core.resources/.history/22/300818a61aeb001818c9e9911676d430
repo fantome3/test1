@@ -1,0 +1,60 @@
+/**
+ * @file Borne.h
+ * @brief contient les déclarations des paramètres et fonction
+ * de la classe Borne
+ * @date Created on: 2018-10-14
+ * @author   Author: Jires Djoko
+ */
+#include <string>
+#include "ContratException.h"
+#include "validationFormat.h"
+
+#ifndef BORNE_H_
+#define BORNE_H_
+
+namespace bornesQuebec{
+/**
+ *@class Borne
+ */
+class Borne {
+
+/**
+ * @brief prototype de différentes fonctions
+ */
+public:
+	Borne(int p_identifiant, const std::string& p_direction, const std::string& p_nomTopographique,
+			double p_longitude, double p_latitude);
+
+	bool operator==(const Borne& borne) const;
+
+	virtual std::string reqBorneFormate() const = 0;
+
+	int reqIdentifiant() const;
+	double reqLatitude() const;
+	double reqLongitude() const;
+	const std::string& reqDirection() const;
+	const std::string& reqNomTopographique() const;
+	void asNomTopographique(const std::string& nomTopographique);
+
+	static bool validerBorne(int p_identifiant, std::string p_direction, std::string p_nomTopographique,
+			double p_latitude, double p_longitude);
+
+	/**
+	 * @brief déclaration des variables privées
+	 */
+private:
+	int m_identifiant;
+	std::string m_direction;
+	std::string m_nomTopographique;
+	double m_longitude;
+	double m_latitude;
+	void verifieInvariant() const;
+
+	/**
+	 *protected:
+	void verifieInvariant() const;
+	 */
+
+};
+}
+#endif /* BORNE_H_ */

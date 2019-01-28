@@ -1,0 +1,36 @@
+/**
+ * BorneFontaine.h
+ *  Created on: 2018-11-08
+ *      Author: etudiant
+ */
+
+#ifndef BORNEFONTAINE_H_
+#define BORNEFONTAINE_H_
+
+#include "Borne.h"
+#include "ContratException.h"
+#include <string>
+
+namespace bornesQuebec{
+/*
+ *
+ */
+class BorneFontaine : public Borne {
+public:
+	BorneFontaine(int , const std::string& , const std::string& , double , double ,
+			const std::string& p_ville, const std::string& p_arrondissement);
+	virtual ~BorneFontaine();
+
+
+	std::string reqBorneFormate() const;
+
+	const std::string& reqArrondissement() const;
+	const std::string& reqVille() const;
+
+private:
+	std::string m_ville;
+	std::string m_arrondissement;
+	void verifieInvariant() const;
+};
+}
+#endif /* BORNEFONTAINE_H_ */

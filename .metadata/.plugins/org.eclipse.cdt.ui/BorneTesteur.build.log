@@ -1,0 +1,15 @@
+11:16:21 **** Incremental Build of configuration Debug for project BorneTesteur ****
+make all 
+Building file: ../RegistreBorneTesteur.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++1y -I"/home/etudiant/Bureau/TP4 bon/source" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"RegistreBorneTesteur.d" -MT"RegistreBorneTesteur.o" -o "RegistreBorneTesteur.o" "../RegistreBorneTesteur.cpp"
+Finished building: ../RegistreBorneTesteur.cpp
+ 
+Building target: BorneTesteur
+Invoking: GCC C++ Linker
+g++ -L"/home/etudiant/Bureau/TP4 bon/source/Debug" -o "BorneTesteur"  ./BorneFontaineTesteur.o ./BorneStationnementTesteur.o ./BorneTesteur.o ./RegistreBorneTesteur.o   -lgtest_main -lgtest -lpthread -lsource
+Finished building target: BorneTesteur
+ 
+
+11:16:24 Build Finished (took 2s.337ms)
+

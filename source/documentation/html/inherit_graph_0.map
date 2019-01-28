@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classbornesQuebec_1_1Borne.html" title="constructeur par défaut qui initialise les paramètres à sa création " alt="" coords="5,31,153,57"/>
+<area shape="rect" id="node2" href="$classbornesQuebec_1_1BorneFontaine.html" title="bornesQuebec::BorneFontaine" alt="" coords="218,5,417,32"/>
+<area shape="rect" id="node3" href="$classbornesQuebec_1_1BorneStationnement.html" title="on crée notre objet a base de la classe Borne " alt="" coords="201,56,433,83"/>
+</map>

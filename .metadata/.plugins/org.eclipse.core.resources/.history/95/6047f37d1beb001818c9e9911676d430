@@ -1,0 +1,92 @@
+/*
+ * BorneStationnement.cpp
+ *
+ *  Created on: 2018-11-09
+ *      Author: etudiant
+ */
+
+#include <sstream>
+#include "BorneStationnement.h"
+
+namespace bornesQuebec {
+
+//j'ai ajouter "unsigned" si xa ne marche pas, enlever
+BorneStationnement::BorneStationnement(int p_identifiant, const std::string& p_direction, const std::string& p_nomTopographique, double p_longitude,
+		double p_latitude, const std::string& p_type, double p_lectureMetrique, int p_segmentRue, const std::string& p_numBorne, const std::string& p_coteRue)
+:Borne(p_identifiant, p_direction, p_nomTopographique, p_longitude, p_latitude),
+ m_type(p_type), m_lectureMetrique(p_lectureMetrique), m_segmentRue(p_segmentRue), m_numBorne(p_numBorne), m_coteRue(p_coteRue)
+{
+	PRECONDITION(BorneStationnement::validerType(p_type));
+	PRECONDITION(p_lectureMetrique > 0);
+	PRECONDITION(p_segmentRue > 0);
+	PRECONDITION(p_numBorne.length() <= 4);
+	PRECONDITION(util::validerPointCardinal(p_coteRue));
+
+	POSTCONDITION(m_type == p_type);
+	POSTCONDITION(m_lectureMetrique == p_lectureMetrique);
+	POSTCONDITION(m_segmentRue == p_segmentRue);
+	POSTCONDITION(m_numBorne == p_numBorne);
+	POSTCONDITION(m_coteRue == p_coteRue);
+
+	INVARIANTS();
+}
+
+const std::string& BorneStationnement::reqCoteRue() const {
+	return m_coteRue;
+}
+
+double BorneStationnement::reqLectureMetrique() const {
+	return m_lectureMetrique;
+}
+
+const std::string& BorneStationnement::reqNumBorne() const {
+	return m_numBorne;
+}
+
+int BorneStationnement::reqSegmentRue() const {
+	return m_segmentRue;
+}
+
+const std::string& BorneStationnement::reqType() const {
+	return m_type;
+}
+
+bool BorneStationnement::validerType(const std::string& p_type){
+	bool resultat { false };
+	if(p_type == "stationnement" || p_type == "paiement")
+		resultat = true;
+	return resultat;
+}
+
+std::string BorneStationnement::reqBorneFormate() const{
+	//! on instancie un objet std::ostringstream
+		std::ostringstream valeurs;
+		valeurs << "Borne de " << reqType() << std::endl
+				<< "----------------------------------------------" << std::endl
+				<< "Identifiant de la borne : " << reqIdentifiant() << std::endl
+				<< "Direction          : " << reqDirection() << std::endl
+				<< "Nom topographique  : " << reqNomTopographique() << std::endl
+				<< "Longitude          : " << std::fixed << reqLongitude() << std::endl
+				<< "Latitude           : " << std::fixed << reqLatitude()<< std::endl
+				<<"Distance mesurée    : " << std::fixed << reqLectureMetrique() << std::endl
+				<< "Segment de Rue     : " << reqSegmentRue() << std::endl
+				<<"Numero de la borne  : " << reqNumBorne() << std::endl
+				<< "Cote de la rue     : " << reqCoteRue() << std::endl;
+
+		return valeurs.str();
+}
+
+void BorneStationnement::verifieInvariant() const
+{
+	INVARIANT(m_type == "stationnement" || m_type == "paiement");
+	INVARIANT(m_lectureMetrique > 0);
+	INVARIANT(m_segmentRue > 0);
+	INVARIANT(m_numBorne.length() >= 0 || m_numBorne.length() <= 4);
+	INVARIANT(util::validerPointCardinal(m_coteRue));
+}
+
+BorneStationnement::~BorneStationnement() {
+	// TODO Auto-generated destructor stub
+}
+
+} /* namespace bornesQuebec */

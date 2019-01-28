@@ -1,0 +1,123 @@
+/*
+ * BorneTesteur.cpp
+ *
+ *  Created on: 2018-11-09
+ *      Author: etudiant
+ */
+
+#include <gtest/gtest.h>
+#include "Borne.h"
+
+using namespace bornesQuebec;
+
+//test sur le constructeur
+TEST(Borne, parametreValide){
+	bornesQuebec::Borne borne(300070, "Nord", "Boulevard René-Levesque Est", -71.226669, 46.814323);
+	ASSERT_EQ(300070, borne.reqIdentifiant());
+	ASSERT_EQ("Nord", borne.reqDirection());
+	ASSERT_EQ("Boulevard René-Levesque Est", borne.reqNomTopographique());
+	ASSERT_EQ(-71.226669, borne.reqLongitude());
+	ASSERT_EQ(46.814323, borne.reqLatitude());
+}
+
+//identifiant invalide
+TEST(Borne, parametreIdentifiantInvalide){
+	ASSERT_THROW(new Borne(0, "Nord", "Boulevard René-Levesque Est", -71.226669, 46.814323),
+			PreconditionException);
+}
+
+//direction invalide
+TEST(Borne, parametreDirectionInvalide){
+	ASSERT_THROW(new Borne(300070, "Centre", "Boulevard René-Levesque Est", -71.226669, 46.814323),
+			PreconditionException);
+}
+
+//nom topographique invalide
+TEST(Borne, parametreNomtopographiqueInvalide){
+	ASSERT_THROW(new Borne(300070, "Nord", "", -71.226669, 46.814323),
+			PreconditionException);
+}
+/*
+//longitude invalide
+TEST(Borne, parametreLongitudeInvalide){
+	ASSERT_THROW(new Borne(300070, "Nord", "Boulevard René-Levesque Est", -71.226669, 46.814323),
+			PreconditionException);
+}
+
+//latitude invalide
+TEST(Borne, parmetreLatitudeInvalide){
+	ASSERT_THROW(new Borne(300070, "Nord", "Boulevard René-Levesque Est", -71.226669, 46.814323),
+			PreconditionException);
+}
+*/
+
+/**
+ * COMMENT FAIRE POUR VERFIER LE CAS OU IL MANQUE UN PARAMÈTRE
+ */
+
+/**
+ * \class MethodeBorne
+ * \brief Fixture pour les tests comparaisons de Deux dates
+ */
+class MethodeBorne : public ::testing::Test
+{
+public:
+	MethodeBorne():f_borne(300070, "Nord", "Boulevard Rene-Levesque Est", -71.226669, 46.814323)
+	{
+	};
+	Borne f_borne;
+};
+
+/**
+ * \brief  Test de la méthode std::string Borne::reqBorneFormatee()
+ *        cas valide reqBorneFormate: Borne connue dont on connaît le format.
+ *        cas invalide Aucun d'identifié
+ */
+TEST_F(MethodeBorne, AfficheBorne){
+	ASSERT_EQ("Identifiant de la borne : 300070\nDirection          : Nord\nNom topographique  : Boulevard Rene-Levesque Est\nLongitude          : -71.226669\nLatitude           : 46.814323\n",
+			f_borne.reqBorneFormate());
+}
+
+/**
+ * \brief Test de la méthode void Borne::asNomTopographique
+ *     	cas valide
+ *     		asNomTopographique: Assigner un nom valides
+ *   	cas invalides
+ *        	parametre vide
+ */
+TEST_F(MethodeBorne, ModifierNomTopographique){
+	f_borne.asNomTopographique("Rue de l'universite");
+	ASSERT_EQ("Rue de l'universite", f_borne.reqNomTopographique());
+}
+
+//parametre invalide
+TEST_F(MethodeBorne, NomTopographiqueInvalide){
+	ASSERT_THROW(f_borne.asNomTopographique(""), PreconditionException);
+}
+/**
+ * \class DeuxBornes
+ * \brief Fixture pour les tests comparaisons de Deux dates
+ */
+class DeuxBornes : public ::testing::Test
+{
+public:
+	DeuxBornes():f_borne1(300070, "Nord", "Boulevard René-Levesque Est", -71.226669, 46.814323),
+				 f_borne2(300070, "Nord", "Boulevard René-Levesque Est", -71.226669, 46.81432){
+	};
+	Borne f_borne1, f_borne2;
+};
+
+/**
+ * \brief  Test de la méthode bool Borne::operator== (const Borne& obj)
+ *        cas valide:
+ *   		OperatorEgalEgalVrai: 	Borne indentique à elle-même.
+ *  		OperatorEgalEgalFaux: 	Bornes différentes
+ *        cas invalide Aucun d'identifié
+ */
+TEST_F(DeuxBornes, OperatorEgalEgalVrai){
+	ASSERT_EQ(f_borne1, f_borne2);
+}
+
+TEST_F(DeuxBornes, OperatorEgalEgalFaux){
+	ASSERT_FALSE(f_borne1 == f_borne2);
+}

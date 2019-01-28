@@ -1,0 +1,51 @@
+11:05:29 **** Build of configuration Debug for project source ****
+make all 
+Building file: ../Borne.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++1y -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Borne.d" -MT"Borne.o" -o "Borne.o" "../Borne.cpp"
+Finished building: ../Borne.cpp
+ 
+Building file: ../BorneFontaine.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++1y -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"BorneFontaine.d" -MT"BorneFontaine.o" -o "BorneFontaine.o" "../BorneFontaine.cpp"
+Finished building: ../BorneFontaine.cpp
+ 
+Building file: ../BorneStationnement.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++1y -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"BorneStationnement.d" -MT"BorneStationnement.o" -o "BorneStationnement.o" "../BorneStationnement.cpp"
+Finished building: ../BorneStationnement.cpp
+ 
+Building file: ../ContratException.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++1y -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"ContratException.d" -MT"ContratException.o" -o "ContratException.o" "../ContratException.cpp"
+Finished building: ../ContratException.cpp
+ 
+Building file: ../RegistreBorne.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++1y -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"RegistreBorne.d" -MT"RegistreBorne.o" -o "RegistreBorne.o" "../RegistreBorne.cpp"
+Finished building: ../RegistreBorne.cpp
+ 
+Building file: ../validationFormat.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++1y -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"validationFormat.d" -MT"validationFormat.o" -o "validationFormat.o" "../validationFormat.cpp"
+../validationFormat.cpp: In function ‘bool util::valideStationnementGEOJSON(std::__cxx11::string&, std::ostringstream&)’:
+../validationFormat.cpp:226:33: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    if(attribut.find("NO_CIVIQ") != -1 || attribut.find("ID_VOIE_PUB") != -1)
+                                 ^
+../validationFormat.cpp:226:71: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    if(attribut.find("NO_CIVIQ") != -1 || attribut.find("ID_VOIE_PUB") != -1)
+                                                                       ^
+../validationFormat.cpp:230:30: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    if (attribut.find("null") != -1)
+                              ^
+Finished building: ../validationFormat.cpp
+ 
+Building target: libsource.a
+Invoking: GCC Archiver
+ar -r  "libsource.a"  ./Borne.o ./BorneFontaine.o ./BorneStationnement.o ./ContratException.o ./RegistreBorne.o ./validationFormat.o   
+ar: création de libsource.a
+Finished building target: libsource.a
+ 
+
+11:05:34 Build Finished (took 5s.22ms)
+
